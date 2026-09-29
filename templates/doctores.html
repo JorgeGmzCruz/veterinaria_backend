@@ -1,0 +1,85 @@
+{%load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Conoce a los médicos veterinarios de Patitas Felices, especialistas en perros, gatos y cirugía.">
+<meta name="theme-color" content="#3F6C51">
+<title>Doctores · Patitas Felices</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/doctores.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="15" r="4.2"/>
+          <circle cx="6.2" cy="8.4" r="1.9"/>
+          <circle cx="17.8" cy="8.4" r="1.9"/>
+          <circle cx="9.3" cy="4.6" r="1.7"/>
+          <circle cx="14.7" cy="4.6" r="1.7"/>
+        </svg>
+      </span>
+      <div>
+        <h1>Veterinaria Patitas Felices</h1>
+        <p>Cuidamos a tus mejores amigos</p>
+      </div>
+    </div>
+  </header>
+
+  <nav class="site-nav" aria-label="Principal">
+    <ul>
+      <li><a href="principal.html">Inicio</a></li>
+      <li><a href="cuidadomasc.html">Cuidados</a></li>
+      <li><a href="doctores.html" class="active">Doctores</a></li>
+      <li><a href="productosmasc.html">Productos</a></li>
+      <li><a href="contactoyserv.html">Contacto</a></li>
+      <li><a href="principal.html#citas" class="nav-cta">Agendar cita</a></li>
+    </ul>
+  </nav>
+
+  <main id="main">
+    <section id="doctores">
+      <div class="section-head">
+        <span class="eyebrow">Equipo médico</span>
+        <h2>Nuestros doctores</h2>
+        <p>Profesionales certificados dedicados al bienestar de tu mascota.</p>
+      </div>
+
+      <div class="doctores-grid">
+
+        <article class="doctor-card">
+          <img src="img/doctora.jpg" alt="Retrato de la Dra. María López" loading="lazy">
+          <div class="doctor-body">
+            <span class="doctor-tag">Diagnóstico general</span>
+            <h3>Dra. María López</h3>
+            <p>Especialista en perros y gatos, con enfoque en diagnóstico general y medicina preventiva.</p>
+          </div>
+        </article>
+
+        <article class="doctor-card">
+          <img src="img/doctor.jfif" alt="Retrato del Dr. Carlos Ramírez" loading="lazy">
+          <div class="doctor-body">
+            <span class="doctor-tag">Cirugía y emergencias</span>
+            <h3>Dr. Carlos Ramírez</h3>
+            <p>Especialidad en quirófano: cirugía veterinaria y atención de emergencias.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Veterinaria Patitas Felices © 2026</p>
+  </footer>
+</body>
+</html>
