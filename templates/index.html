@@ -38,10 +38,10 @@
   <nav class="site-nav" aria-label="Principal">
     <ul>
       <li><a href="{% url 'inicio' %}" class="active">Inicio</a></li>
-      <li><a href="cuidadomasc.html">Cuidados</a></li>
-      <li><a href="doctores.html">Doctores</a></li>
-      <li><a href="productosmasc.html">Productos</a></li>
-      <li><a href="contactoyserv.html">Contacto</a></li>
+      <li><a href="{% url 'cuidados' %}">Cuidados</a></li>
+      <li><a href="{% url 'doctores' %}">Doctores</a></li>
+      <li><a href="{% url 'productos' %}">Productos</a></li>
+      <li><a href="{% url 'contacto' %}">Contacto</a></li>
       <li><a href="#citas" class="nav-cta">Agendar cita</a></li>
     </ul>
   </nav>
@@ -284,13 +284,6 @@ Teléfono de contacto: ${datosBase.telefono}
 
       // Avisa sola a la veterinaria por Telegram (bot backend), sin que nadie tenga que hacer clic.
       // Si falla (sin internet, servidor caído, etc.) no interrumpe el flujo del cliente.
-      function getCookie(name) {
-  return document.cookie
-    .split('; ')
-    .find(row => row.startsWith(name + '='))
-    ?.split('=')[1];
-} 
-      
       function notificarVeterinaria(){
         const fechaBonita = formatDate(date.value);
         fetch("{% url 'notificar_cita' %}", {
