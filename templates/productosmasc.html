@@ -1,4 +1,4 @@
-{%load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/productos.css">
+<link rel="stylesheet" href="{% static 'css/productos.css' %}">
 </head>
 <body>
   <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -37,12 +37,12 @@
 
   <nav class="site-nav" aria-label="Principal">
     <ul>
-      <li><a href="principal.html">Inicio</a></li>
-      <li><a href="cuidadomasc.html">Cuidados</a></li>
-      <li><a href="doctores.html">Doctores</a></li>
-      <li><a href="productosmasc.html" class="active">Productos</a></li>
-      <li><a href="contactoyserv.html">Contacto</a></li>
-      <li><a href="principal.html#citas" class="nav-cta">Agendar cita</a></li>
+      <li><a href="{% url 'inicio' %}">Inicio</a></li>
+      <li><a href="{% url 'cuidados' %}">Cuidados</a></li>
+      <li><a href="{% url 'doctores' %}">Doctores</a></li>
+      <li><a href="{% url 'productos' %}" class="active">Productos</a></li>
+      <li><a href="{% url 'contacto' %}">Contacto</a></li>
+      <li><a href="{% url 'inicio' %}#citas" class="nav-cta">Agendar cita</a></li>
     </ul>
   </nav>
 
@@ -57,7 +57,7 @@
       <div class="productos-grid">
 
         <article class="producto-card">
-          <img src="img/alimentopremium.webp" alt="Alimento Premium" loading="lazy" width="400" height="260">
+          <img src="{% static 'img/alimentopremium.webp' %}" alt="Alimento Premium" loading="lazy" width="400" height="260">
           <div class="producto-body">
             <h3>Alimento Premium</h3>
             <p>Nutrición balanceada para mascotas.</p>
@@ -66,7 +66,7 @@
         </article>
 
         <article class="producto-card">
-          <img src="img/jugueteperro.jpg" alt="Juguetes" loading="lazy" width="400" height="260">
+          <img src="{% static 'img/jugueteperro.jpg' %}" alt="Juguetes" loading="lazy" width="400" height="260">
           <div class="producto-body">
             <h3>Juguetes</h3>
             <p>Accesorios divertidos y resistentes.</p>
@@ -75,7 +75,7 @@
         </article>
 
         <article class="producto-card">
-          <img src="img/medicamentoperro.webp" alt="Medicamentos" loading="lazy" width="400" height="260">
+          <img src="{% static 'img/medicamentoperro.webp' %}" alt="Medicamentos" loading="lazy" width="400" height="260">
           <div class="producto-body">
             <h3>Medicamentos</h3>
             <p>Productos veterinarios certificados.</p>

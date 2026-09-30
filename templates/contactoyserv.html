@@ -1,11 +1,11 @@
-{%load static %}
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/contacto.css">
-    <title>Concacto</title>
+    <link rel="stylesheet" href="{% static 'css/contacto.css' %}">
+    <title>Contacto · Patitas Felices</title>
 </head>
 <body>
     <header>
@@ -14,11 +14,11 @@
     </header>
 
     <nav>
-        <a href="principal.html">Inicio</a>
-        <a href="cuidadomasc.html">Cuidados</a>
-        <a href="doctores.html">Doctores</a>
-        <a href="productosmasc.html">Productos</a>
-        <a href="contactoyserv.html">Contacto</a>
+        <a href="{% url 'inicio' %}">Inicio</a>
+        <a href="{% url 'cuidados' %}">Cuidados</a>
+        <a href="{% url 'doctores' %}">Doctores</a>
+        <a href="{% url 'productos' %}">Productos</a>
+        <a href="{% url 'contacto' %}">Contacto</a>
     </nav>
 
     <section id="contacto">
@@ -32,7 +32,7 @@
     </section>
 
     <section id="ubicacion">
-        <img src="img/ubicacion.jpg" alt="Croquis de la Ubicacion">
+        <img src="{% static 'img/ubicacion.jpg' %}" alt="Croquis de la ubicación">
     </section>
 
     <footer>
