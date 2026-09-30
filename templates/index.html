@@ -306,7 +306,7 @@
       }
 
       // Llena la lista de horas según el día elegido
-      function cargarHoras(){
+      async function cargarHoras(){
         date.setCustomValidity('');
 
         if(!date.value){
@@ -326,17 +326,36 @@
           return;
         }
 
+        // Consulta qué horas de ese día ya están reservadas
+        const fechaElegida = date.value;
+        time.innerHTML = '<option value="">Cargando horas…</option>';
+        let ocupadas = [];
+        try {
+          const resp = await fetch("{% url 'horas_ocupadas' %}?fecha=" + fechaElegida);
+          if (resp.ok) ocupadas = (await resp.json()).ocupadas || [];
+        } catch (err) {
+          // Si falla, el servidor igual valida al enviar la cita
+        }
+        if (date.value !== fechaElegida) return; // cambió de fecha mientras se consultaba
+
         const ahora = new Date();
         const minAhora = ahora.getHours() * 60 + ahora.getMinutes();
         let opciones = '';
+        let disponibles = 0;
         for(let t = aMin(rango[0]); t + INTERVALO_MIN <= aMin(rango[1]); t += INTERVALO_MIN){
-          if(date.value === hoyLocal && t <= minAhora) continue; // no mostrar horas que ya pasaron
-          opciones += `<option value="${aHHMM(t)}">${aHHMM(t)}</option>`;
+          if(fechaElegida === hoyLocal && t <= minAhora) continue; // no mostrar horas que ya pasaron
+          const hhmm = aHHMM(t);
+          if(ocupadas.includes(hhmm)){
+            opciones += `<option value="" disabled>${hhmm} · ocupada</option>`;
+          } else {
+            opciones += `<option value="${hhmm}">${hhmm}</option>`;
+            disponibles++;
+          }
         }
 
-        time.innerHTML = opciones
+        time.innerHTML = disponibles
           ? '<option value="">Selecciona una hora</option>' + opciones
-          : '<option value="">Ya no hay horarios hoy</option>';
+          : '<option value="">No hay horarios disponibles</option>';
         updateSummary();
       }
 
@@ -382,6 +401,7 @@
           } else {
             if (ventana) ventana.close();
             alert(data.error || 'No se pudo enviar la cita. Intenta de nuevo.');
+            if (r.status === 409) cargarHoras(); // la hora se ocupó mientras llenaba el formulario
           }
         } catch (err) {
           if (ventana) ventana.close();

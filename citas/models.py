@@ -13,6 +13,7 @@ class Cita(models.Model):
     especie = models.CharField(max_length=50)
     servicio = models.CharField(max_length=100)
     fecha = models.CharField(max_length=50)
+    fecha_iso = models.DateField(null=True, blank=True)  # fecha real, para revisar horas ocupadas
     hora = models.CharField(max_length=10)
     dueno = models.CharField(max_length=100)
     telefono = models.CharField(max_length=30)

@@ -4,11 +4,13 @@ from datetime import datetime
 
 import requests
 from django.conf import settings
+from django.db import transaction
+from django.db.models import Count
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 
 from .models import Cita
 
@@ -69,6 +71,7 @@ HORARIOS = {
     6: ("09:00", "14:00"),
 }
 INTERVALO_MIN = 30  # duración de cada cita en minutos
+CITAS_POR_HORARIO = 1  # cuántas citas caben a la misma hora (sube a 2 si atienden dos doctores a la vez)
 
 
 def a_minutos(hhmm):
@@ -99,6 +102,23 @@ def validar_horario(fecha_iso, hora):
     return None
 
 
+@require_GET
+def horas_ocupadas(request):
+    """Horas de un día que ya no tienen lugar (el formulario las marca como ocupadas)."""
+    try:
+        fecha = datetime.strptime(request.GET.get("fecha", ""), "%Y-%m-%d").date()
+    except ValueError:
+        return JsonResponse({"ocupadas": []}, status=400)
+
+    llenas = (
+        Cita.objects.filter(fecha_iso=fecha)
+        .values("hora")
+        .annotate(n=Count("id"))
+        .filter(n__gte=CITAS_POR_HORARIO)
+    )
+    return JsonResponse({"ocupadas": [c["hora"] for c in llenas]})
+
+
 @require_POST
 def notificar_cita(request):
     try:
@@ -114,8 +134,18 @@ def notificar_cita(request):
     if error:
         return JsonResponse({"ok": False, "error": error}, status=400)
 
-    # Se guarda primero, para que no se pierda si Telegram falla
-    cita = Cita.objects.create(**{c: datos[c] for c in campos})
+    fecha = datetime.strptime(datos["fecha_iso"], "%Y-%m-%d").date()
+
+    with transaction.atomic():
+        ocupadas = Cita.objects.filter(fecha_iso=fecha, hora=datos["hora"]).count()
+        if ocupadas >= CITAS_POR_HORARIO:
+            return JsonResponse(
+                {"ok": False, "error": "Esa hora ya fue reservada. Elige otra, por favor."},
+                status=409,
+            )
+
+        # Se guarda primero, para que no se pierda si Telegram falla
+        cita = Cita.objects.create(fecha_iso=fecha, **{c: datos[c] for c in campos})
 
     texto = (
         f"🐾 Nueva cita #{cita.id}\n\n"
