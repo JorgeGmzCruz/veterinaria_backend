@@ -107,6 +107,40 @@
       </div>
     </section>
 
+    <section id="horarios">
+      <div class="section-head">
+        <span class="eyebrow">Horarios</span>
+        <h2>Cuándo puedes visitarnos</h2>
+        <p>Atendemos con cita previa. Elige el día y la hora que más te acomode.</p>
+      </div>
+
+      <div class="horarios-card">
+        <ul class="horarios-lista">
+          <li data-dias="1,2,3,4,5">
+            <span class="dia">Lunes a viernes</span>
+            <span class="horas">9:00 – 18:00</span>
+          </li>
+          <li data-dias="6">
+            <span class="dia">Sábado</span>
+            <span class="horas">9:00 – 14:00</span>
+          </li>
+          <li data-dias="0" class="cerrado">
+            <span class="dia">Domingo</span>
+            <span class="horas">Cerrado</span>
+          </li>
+        </ul>
+
+        <div class="horarios-aside">
+          <span class="horarios-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </span>
+          <h3>Citas de 30 minutos</h3>
+          <p>Reserva tu lugar en línea y te confirmamos por Telegram.</p>
+          <a href="#citas" class="btn btn-primary">Agendar una cita</a>
+        </div>
+      </div>
+    </section>
+
     <section id="citas" class="booking">
       <div class="section-head">
         <span class="eyebrow">Reserva en línea</span>
@@ -311,6 +345,12 @@
         el.addEventListener('change', updateSummary);
       });
       date.addEventListener('change', cargarHoras);
+
+      // Resalta en la sección de horarios la fila que corresponde a hoy
+      const diaHoy = String(hoy.getDay());
+      document.querySelectorAll('.horarios-lista li[data-dias]').forEach(li => {
+        if (li.dataset.dias.split(',').includes(diaHoy)) li.classList.add('hoy');
+      });
 
       // Avisa a la veterinaria por Telegram y abre el bot para que el cliente reciba su confirmación.
       async function notificarVeterinaria(ventana){
