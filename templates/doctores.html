@@ -1,4 +1,4 @@
-{%load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/doctores.css">
+<link rel="stylesheet" href="{% static 'css/doctores.css' %}">
 </head>
 <body>
   <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -37,12 +37,12 @@
 
   <nav class="site-nav" aria-label="Principal">
     <ul>
-      <li><a href="principal.html">Inicio</a></li>
-      <li><a href="cuidadomasc.html">Cuidados</a></li>
-      <li><a href="doctores.html" class="active">Doctores</a></li>
-      <li><a href="productosmasc.html">Productos</a></li>
-      <li><a href="contactoyserv.html">Contacto</a></li>
-      <li><a href="principal.html#citas" class="nav-cta">Agendar cita</a></li>
+      <li><a href="{% url 'inicio' %}">Inicio</a></li>
+      <li><a href="{% url 'cuidados' %}">Cuidados</a></li>
+      <li><a href="{% url 'doctores' %}" class="active">Doctores</a></li>
+      <li><a href="{% url 'productos' %}">Productos</a></li>
+      <li><a href="{% url 'contacto' %}">Contacto</a></li>
+      <li><a href="{% url 'inicio' %}#citas" class="nav-cta">Agendar cita</a></li>
     </ul>
   </nav>
 
@@ -57,7 +57,7 @@
       <div class="doctores-grid">
 
         <article class="doctor-card">
-          <img src="img/doctora.jpg" alt="Retrato de la Dra. María López" loading="lazy">
+          <img src="{% static 'img/doctora.jpg' %}" alt="Retrato de la Dra. María López" loading="lazy">
           <div class="doctor-body">
             <span class="doctor-tag">Diagnóstico general</span>
             <h3>Dra. María López</h3>
@@ -66,7 +66,7 @@
         </article>
 
         <article class="doctor-card">
-          <img src="img/doctor.jfif" alt="Retrato del Dr. Carlos Ramírez" loading="lazy">
+          <img src="{% static 'img/doctor.jpg' %}" alt="Retrato del Dr. Carlos Ramírez" loading="lazy">
           <div class="doctor-body">
             <span class="doctor-tag">Cirugía y emergencias</span>
             <h3>Dr. Carlos Ramírez</h3>

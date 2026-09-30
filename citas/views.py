@@ -9,6 +9,18 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 def inicio(request):
     return render(request, 'index.html')
 
+def cuidados(request):
+    return render(request, 'cuidadomasc.html')
+
+def doctores(request):
+    return render(request, 'doctores.html')
+
+def productos(request):
+    return render(request, 'productosmasc.html')
+
+def contacto(request):
+    return render(request, 'contactoyserv.html')
+
 @ensure_csrf_cookie
 def inicio(request):
     return render(request, 'index.html')
