@@ -159,7 +159,9 @@
               </div>
               <div class="field">
                 <label for="time">Hora</label>
-                <input type="time" id="time" name="time" required>
+                <select id="time" name="time" required>
+                  <option value="">Elige primero la fecha</option>
+                </select>
               </div>
             </div>
           </fieldset>
@@ -205,10 +207,6 @@
 
   <script>
     (function(){
-      // ⚠️ Cambia esto por el usuario de Telegram de la veterinaria (sin @).
-      // Debe ser un usuario o bot que tenga un @usuario público configurado en Telegram.
-      const USUARIO_TELEGRAM = "patitasfelicesvet"; // ej. si tu chat es t.me/patitasfelicesvet
-
       const form = document.getElementById('booking-form');
       const petName = document.getElementById('pet-name');
       const petSpecies = document.getElementById('pet-species');
@@ -224,9 +222,33 @@
 
       const btnTelegram = document.getElementById('btn-telegram');
 
-      // No permitir fechas pasadas
-      const today = new Date().toISOString().split('T')[0];
-      date.setAttribute('min', today);
+      // Fecha de hoy en hora local (no en UTC) para no permitir fechas pasadas
+      const hoy = new Date();
+      const hoyLocal = hoy.getFullYear() + '-' +
+        String(hoy.getMonth() + 1).padStart(2, '0') + '-' +
+        String(hoy.getDate()).padStart(2, '0');
+      date.setAttribute('min', hoyLocal);
+
+      // Horario de atención. 0 = domingo ... 6 = sábado. null = cerrado.
+      // Debe coincidir con HORARIOS de views.py
+      const HORARIOS = {
+        0: null,
+        1: ['09:00', '18:00'],
+        2: ['09:00', '18:00'],
+        3: ['09:00', '18:00'],
+        4: ['09:00', '18:00'],
+        5: ['09:00', '18:00'],
+        6: ['09:00', '14:00']
+      };
+      const INTERVALO_MIN = 30; // duración de cada cita en minutos
+
+      function aMin(hhmm){
+        const [h, m] = hhmm.split(':').map(Number);
+        return h * 60 + m;
+      }
+      function aHHMM(min){
+        return String(Math.floor(min / 60)).padStart(2, '0') + ':' + String(min % 60).padStart(2, '0');
+      }
 
       function formatDate(value){
         if(!value) return '';
@@ -249,80 +271,89 @@
           : 'Sin datos aún';
       }
 
+      // Llena la lista de horas según el día elegido
+      function cargarHoras(){
+        date.setCustomValidity('');
+
+        if(!date.value){
+          time.innerHTML = '<option value="">Elige primero la fecha</option>';
+          updateSummary();
+          return;
+        }
+
+        const [y, m, d] = date.value.split('-').map(Number);
+        const rango = HORARIOS[new Date(y, m - 1, d).getDay()];
+
+        if(!rango){
+          time.innerHTML = '<option value="">Cerrado ese día</option>';
+          date.setCustomValidity('Ese día no hay atención. Elige otra fecha.');
+          date.reportValidity();
+          updateSummary();
+          return;
+        }
+
+        const ahora = new Date();
+        const minAhora = ahora.getHours() * 60 + ahora.getMinutes();
+        let opciones = '';
+        for(let t = aMin(rango[0]); t + INTERVALO_MIN <= aMin(rango[1]); t += INTERVALO_MIN){
+          if(date.value === hoyLocal && t <= minAhora) continue; // no mostrar horas que ya pasaron
+          opciones += `<option value="${aHHMM(t)}">${aHHMM(t)}</option>`;
+        }
+
+        time.innerHTML = opciones
+          ? '<option value="">Selecciona una hora</option>' + opciones
+          : '<option value="">Ya no hay horarios hoy</option>';
+        updateSummary();
+      }
+
       [petName, petSpecies, service, date, time].forEach(el => {
         el.addEventListener('input', updateSummary);
         el.addEventListener('change', updateSummary);
       });
+      date.addEventListener('change', cargarHoras);
 
-      function construirMensajes(){
-        const fechaBonita = formatDate(date.value);
-        const datosBase = {
-          mascota: petName.value,
-          especie: petSpecies.value,
-          servicio: service.value,
-          fecha: fechaBonita,
-          hora: time.value,
-          dueno: ownerName.value,
-          telefono: phone.value
-        };
-
-        // Texto plano (Telegram no interpreta *negritas* al llegar por el parámetro ?text=)
-        const telegram =
-`Hola, quiero agendar una cita 🐾
-
-Dueño: ${datosBase.dueno}
-Mascota: ${datosBase.mascota} (${datosBase.especie})
-Servicio: ${datosBase.servicio}
-Fecha: ${datosBase.fecha}
-Hora: ${datosBase.hora}
-Teléfono de contacto: ${datosBase.telefono}
-
-¡Ya está generada mi cita, quedo al pendiente de confirmación!`;
-
-        return { telegram };
-      }
-
-      // Avisa sola a la veterinaria por Telegram (bot backend), sin que nadie tenga que hacer clic.
-      // Si falla (sin internet, servidor caído, etc.) no interrumpe el flujo del cliente.
-        async function notificarVeterinaria(ventana){
-          try {
+      // Avisa a la veterinaria por Telegram y abre el bot para que el cliente reciba su confirmación.
+      async function notificarVeterinaria(ventana){
+        try {
           const r = await fetch("{% url 'notificar_cita' %}", {
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json',
-             'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-               },
-       body: JSON.stringify({
-        mascota: petName.value,
-        especie: petSpecies.value,
-        servicio: service.value,
-        fecha: formatDate(date.value),
-        hora: time.value,
-        dueno: ownerName.value,
-        telefono: phone.value
-      })
-      });
-    const data = await r.json();
-    if (r.ok && data.ok && data.enlace) {
-      if (ventana) { ventana.location = data.enlace; } else { window.location = data.enlace; }
-    } else if (r.ok && data.ok) {
-      if (ventana) ventana.close();
-      alert('¡Cita enviada! Te contactaremos para confirmarla.');
-    } else {
-      if (ventana) ventana.close();
-      alert('No se pudo enviar la cita. Intenta de nuevo.');
-    }
-  } catch (err) {
-    if (ventana) ventana.close();
-    alert('No se pudo enviar la cita. Revisa tu conexión.');
-  }
-}
+              'Content-Type': 'application/json',
+              'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify({
+              mascota: petName.value,
+              especie: petSpecies.value,
+              servicio: service.value,
+              fecha: formatDate(date.value),
+              fecha_iso: date.value,
+              hora: time.value,
+              dueno: ownerName.value,
+              telefono: phone.value
+            })
+          });
+          const data = await r.json();
 
-btnTelegram.addEventListener('click', function(e){
-  e.preventDefault();
-  if(!form.checkValidity()){ form.reportValidity(); return; }
-  const ventana = window.open('', '_blank');
-  notificarVeterinaria(ventana);
+          if (r.ok && data.ok && data.enlace) {
+            if (ventana) { ventana.location = data.enlace; } else { window.location = data.enlace; }
+          } else if (r.ok && data.ok) {
+            if (ventana) ventana.close();
+            alert('¡Cita enviada! Te contactaremos para confirmarla.');
+          } else {
+            if (ventana) ventana.close();
+            alert(data.error || 'No se pudo enviar la cita. Intenta de nuevo.');
+          }
+        } catch (err) {
+          if (ventana) ventana.close();
+          alert('No se pudo enviar la cita. Revisa tu conexión.');
+        }
+      }
+
+      btnTelegram.addEventListener('click', function(e){
+        e.preventDefault();
+        if(!form.checkValidity()){ form.reportValidity(); return; }
+        const ventana = window.open('', '_blank');
+        notificarVeterinaria(ventana);
       });
     })();
   </script>

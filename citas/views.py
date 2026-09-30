@@ -1,10 +1,12 @@
 import hmac
 import json
+from datetime import datetime
 
 import requests
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
@@ -54,6 +56,49 @@ def mensaje_confirmacion(cita):
     )
 
 
+# ---------- Horario de atención ----------
+# Días: 0 = domingo, 1 = lunes ... 6 = sábado. None = cerrado.
+# Debe coincidir con HORARIOS del index.html.
+HORARIOS = {
+    0: None,
+    1: ("09:00", "18:00"),
+    2: ("09:00", "18:00"),
+    3: ("09:00", "18:00"),
+    4: ("09:00", "18:00"),
+    5: ("09:00", "18:00"),
+    6: ("09:00", "14:00"),
+}
+INTERVALO_MIN = 30  # duración de cada cita en minutos
+
+
+def a_minutos(hhmm):
+    h, m = hhmm.split(":")
+    return int(h) * 60 + int(m)
+
+
+def validar_horario(fecha_iso, hora):
+    """Devuelve un texto de error si la fecha/hora no es válida, o None si todo está bien."""
+    try:
+        fecha = datetime.strptime(fecha_iso, "%Y-%m-%d").date()
+        minutos = a_minutos(hora)
+    except (ValueError, TypeError, AttributeError):
+        return "Fecha u hora inválidas"
+
+    rango = HORARIOS.get(fecha.isoweekday() % 7)
+    if not rango:
+        return "Ese día no hay atención"
+
+    inicio, fin = a_minutos(rango[0]), a_minutos(rango[1])
+    if minutos < inicio or minutos + INTERVALO_MIN > fin or (minutos - inicio) % INTERVALO_MIN != 0:
+        return "Esa hora está fuera del horario de atención"
+
+    ahora = timezone.localtime()
+    if fecha < ahora.date() or (fecha == ahora.date() and minutos <= ahora.hour * 60 + ahora.minute):
+        return "Esa hora ya pasó"
+
+    return None
+
+
 @require_POST
 def notificar_cita(request):
     try:
@@ -64,6 +109,10 @@ def notificar_cita(request):
     campos = ["mascota", "especie", "servicio", "fecha", "hora", "dueno", "telefono"]
     if not all(datos.get(c) for c in campos):
         return JsonResponse({"ok": False, "error": "Faltan datos"}, status=400)
+
+    error = validar_horario(datos.get("fecha_iso"), datos.get("hora"))
+    if error:
+        return JsonResponse({"ok": False, "error": error}, status=400)
 
     # Se guarda primero, para que no se pierda si Telegram falla
     cita = Cita.objects.create(**{c: datos[c] for c in campos})
