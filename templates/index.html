@@ -284,38 +284,45 @@ Teléfono de contacto: ${datosBase.telefono}
 
       // Avisa sola a la veterinaria por Telegram (bot backend), sin que nadie tenga que hacer clic.
       // Si falla (sin internet, servidor caído, etc.) no interrumpe el flujo del cliente.
-      function notificarVeterinaria(){
-        const fechaBonita = formatDate(date.value);
-        fetch("{% url 'notificar_cita' %}", {
-          method: 'POST',
-          headers: {
+        async function notificarVeterinaria(ventana){
+          try {
+          const r = await fetch("{% url 'notificar_cita' %}", {
+            method: 'POST',
+            headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-          },
-          body: JSON.stringify({
-            mascota: petName.value,
-            especie: petSpecies.value,
-            servicio: service.value,
-            fecha: fechaBonita,
-            hora: time.value,
-            dueno: ownerName.value,
-            telefono: phone.value
-          })
-        }).catch(function(err){
-          console.warn('No se pudo notificar a la veterinaria por Telegram:', err);
-        });
-      }
+             'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+               },
+       body: JSON.stringify({
+        mascota: petName.value,
+        especie: petSpecies.value,
+        servicio: service.value,
+        fecha: formatDate(date.value),
+        hora: time.value,
+        dueno: ownerName.value,
+        telefono: phone.value
+      })
+      });
+    const data = await r.json();
+    if (r.ok && data.ok && data.enlace) {
+      if (ventana) { ventana.location = data.enlace; } else { window.location = data.enlace; }
+    } else if (r.ok && data.ok) {
+      if (ventana) ventana.close();
+      alert('¡Cita enviada! Te contactaremos para confirmarla.');
+    } else {
+      if (ventana) ventana.close();
+      alert('No se pudo enviar la cita. Intenta de nuevo.');
+    }
+  } catch (err) {
+    if (ventana) ventana.close();
+    alert('No se pudo enviar la cita. Revisa tu conexión.');
+  }
+}
 
-      btnTelegram.addEventListener('click', function(e){
-        e.preventDefault();
-        if(!form.checkValidity()){
-          form.reportValidity();
-          return;
-        }
-        notificarVeterinaria();
-        const { telegram } = construirMensajes();
-        const url = `https://t.me/${USUARIO_TELEGRAM}?text=${encodeURIComponent(telegram)}`;
-        window.open(url, '_blank');
+btnTelegram.addEventListener('click', function(e){
+  e.preventDefault();
+  if(!form.checkValidity()){ form.reportValidity(); return; }
+  const ventana = window.open('', '_blank');
+  notificarVeterinaria(ventana);
       });
     })();
   </script>
