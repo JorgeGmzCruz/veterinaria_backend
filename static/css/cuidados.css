@@ -1,113 +1,78 @@
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
-    background-color: #eef2f3;
-    color: #333;
+/* Estilos específicos de la página de Cuidados.
+   Se carga DESPUÉS de index.css, que ya trae variables, header, menú, footer y section-head. */
+
+.cuidados-list{
+  display:flex;
+  flex-direction:column;
+  gap:28px;
 }
 
-header{
-    background: linear-gradient(90deg, #2e8b57, #3cb371);
-    color: white;
-    text-align: center;
-    padding: 40px 20px;
-    box-shadow: 0px 3px 10px rgba(0,0,0,0.2);
+.cuidado-card{
+  background:var(--white);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-card);
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:0.9fr 1.1fr;
+  transition:transform 0.25s ease, box-shadow 0.25s ease;
+}
+.cuidado-card:hover{
+  transform:translateY(-6px);
+  box-shadow:var(--shadow-card-hover);
 }
 
-header h1{
-    margin: 0;
-    font-size: 42px;
+/* Las tarjetas pares invierten el lado de la imagen */
+.cuidado-card:nth-child(even){ grid-template-columns:1.1fr 0.9fr; }
+.cuidado-card:nth-child(even) .cuidado-media{ order:2; }
+
+.cuidado-media{
+  position:relative;
+  min-height:240px;
+  background:var(--sage-100);
+}
+.cuidado-media img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-header p{
-    margin-top: 10px;
-    font-size: 18px;
+.cuidado-body{
+  padding:30px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.cuidado-tag{
+  align-self:flex-start;
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:0.78rem;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--gold-600);
+  background:var(--gold-100);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:12px;
+}
+.cuidado-body h3{
+  font-family:var(--font-display);
+  color:var(--sage-900);
+  font-size:1.35rem;
+  margin:0 0 10px;
+}
+.cuidado-body p{
+  color:var(--ink-600);
+  margin:0;
+  font-size:0.98rem;
 }
 
-nav{
-    background-color: #246b45;
-    padding: 18px;
-    text-align: center;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-nav a{
-    color: white;
-    text-decoration: none;
-    margin: 15px;
-    font-weight: bold;
-    font-size: 17px;
-    transition: 0.3s;
-}
-
-nav a:hover{
-    color: #ffd700;
-}
-
-h2{
-    text-align: center;
-    margin-top: 40px;
-    font-size: 36px;
-    color: #246b45;
-}
-
-body{
-    display: flex;
-    flex-direction: column;
-}
-
-article{
-    background-color: white;
-    margin: 25px auto;
-    width: 80%;
-    padding: 25px;
-    border-radius: 18px;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.15);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-article:hover{
-    transform: translateY(-8px);
-    box-shadow: 0px 10px 25px rgba(0,0,0,0.25);
-}
-
-article h4{
-    color: #2e8b57;
-    font-size: 28px;
-    margin-bottom: 15px;
-}
-
-article p{
-    font-size: 17px;
-    line-height: 1.7;
-    color: #555;
-}
-
-article img{
-    width: 100%;
-    max-height: 350px;
-    object-fit: cover;
-    border-radius: 15px;
-    margin-top: 20px;
-}
-
-footer{
-    background: linear-gradient(90deg, #2e8b57, #246b45);
-    color: white;
-    text-align: center;
-    padding: 20px;
-    margin-top: 40px;
-    font-size: 15px;
-}
-
-article img{
-    width: 300px;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 15px;
-    margin-top: 20px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+@media (max-width:780px){
+  .cuidado-card,
+  .cuidado-card:nth-child(even){ grid-template-columns:1fr; }
+  .cuidado-card:nth-child(even) .cuidado-media{ order:0; }
+  .cuidado-media{ min-height:200px; }
+  .cuidado-body{ padding:24px; }
 }
