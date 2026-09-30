@@ -2,41 +2,108 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/contacto.css' %}">
-    <title>Contacto · Patitas Felices</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Contacta a Veterinaria Patitas Felices: dirección, teléfono, correo y ubicación.">
+<meta name="theme-color" content="#3F6C51">
+<title>Contacto · Patitas Felices</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+<link rel="stylesheet" href="{% static 'css/contacto.css' %}">
 </head>
 <body>
-    <header>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="15" r="4.2"/>
+          <circle cx="6.2" cy="8.4" r="1.9"/>
+          <circle cx="17.8" cy="8.4" r="1.9"/>
+          <circle cx="9.3" cy="4.6" r="1.7"/>
+          <circle cx="14.7" cy="4.6" r="1.7"/>
+        </svg>
+      </span>
+      <div>
         <h1>Veterinaria Patitas Felices</h1>
         <p>Cuidamos a tus mejores amigos</p>
-    </header>
+      </div>
+    </div>
+  </header>
 
-    <nav>
-        <a href="{% url 'inicio' %}">Inicio</a>
-        <a href="{% url 'cuidados' %}">Cuidados</a>
-        <a href="{% url 'doctores' %}">Doctores</a>
-        <a href="{% url 'productos' %}">Productos</a>
-        <a href="{% url 'contacto' %}">Contacto</a>
-    </nav>
+  <nav class="site-nav" aria-label="Principal">
+    <ul>
+      <li><a href="{% url 'inicio' %}">Inicio</a></li>
+      <li><a href="{% url 'cuidados' %}">Cuidados</a></li>
+      <li><a href="{% url 'doctores' %}">Doctores</a></li>
+      <li><a href="{% url 'productos' %}">Productos</a></li>
+      <li><a href="{% url 'contacto' %}" class="active">Contacto</a></li>
+      <li><a href="{% url 'inicio' %}#citas" class="nav-cta">Agendar cita</a></li>
+    </ul>
+  </nav>
 
+  <main id="main">
     <section id="contacto">
-        <h2>Contacto</h2>
+      <div class="section-head">
+        <span class="eyebrow">Contacto</span>
+        <h2>Estamos para ayudarte</h2>
+        <p>Visítanos, llámanos o escríbenos. Con gusto atendemos a tu mascota.</p>
+      </div>
 
-        <p>Dirección: Av. Principal #123</p>
+      <div class="contacto-grid">
 
-        <p>Teléfono: 81 1234 5678</p>
+        <article class="contacto-card">
+          <span class="contacto-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          </span>
+          <h3>Dirección</h3>
+          <p>Av. Principal #123</p>
+        </article>
 
-        <p>Email: contacto@patitasfelices.com</p>
+        <article class="contacto-card">
+          <span class="contacto-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+          </span>
+          <h3>Teléfono</h3>
+          <a href="tel:8112345678">81 1234 5678</a>
+        </article>
+
+        <article class="contacto-card">
+          <span class="contacto-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 8l9 6 9-6"/></svg>
+          </span>
+          <h3>Correo</h3>
+          <a href="mailto:contacto@patitasfelices.com">contacto@patitasfelices.com</a>
+        </article>
+
+      </div>
+
+      <div class="contacto-cta">
+        <a href="{% url 'inicio' %}#citas" class="btn btn-primary">Agendar una cita</a>
+      </div>
     </section>
 
     <section id="ubicacion">
-        <img src="{% static 'img/ubicacion.jpg' %}" alt="Croquis de la ubicación">
-    </section>
+      <div class="section-head">
+        <span class="eyebrow">Ubicación</span>
+        <h2>Cómo llegar</h2>
+        <p>Encuéntranos fácilmente con este croquis.</p>
+      </div>
 
-    <footer>
-        <p>Veterinaria Patitas Felices © 2026</p>
-    </footer>
+      <figure class="ubicacion-card">
+        <img src="{% static 'img/ubicacion.jpg' %}" alt="Croquis de la ubicación de la veterinaria" loading="lazy">
+        <figcaption>Veterinaria Patitas Felices · Av. Principal #123</figcaption>
+      </figure>
+    </section>
+  </main>
+
+  <footer>
+    <p>Veterinaria Patitas Felices © 2026</p>
+  </footer>
 </body>
 </html>

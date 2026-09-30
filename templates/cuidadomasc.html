@@ -2,59 +2,122 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/cuidados.css' %}">
-    <title>Cuidados de Mascotas · Patitas Felices</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Cuidados especiales para tu mascota: corte de uñas, cepillado, vacunación, desparasitación y alimentación balanceada.">
+<meta name="theme-color" content="#3F6C51">
+<title>Cuidados · Patitas Felices</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+<link rel="stylesheet" href="{% static 'css/cuidados.css' %}">
 </head>
 <body>
-    <header>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="15" r="4.2"/>
+          <circle cx="6.2" cy="8.4" r="1.9"/>
+          <circle cx="17.8" cy="8.4" r="1.9"/>
+          <circle cx="9.3" cy="4.6" r="1.7"/>
+          <circle cx="14.7" cy="4.6" r="1.7"/>
+        </svg>
+      </span>
+      <div>
         <h1>Veterinaria Patitas Felices</h1>
         <p>Cuidamos a tus mejores amigos</p>
-    </header>
+      </div>
+    </div>
+  </header>
 
-    <nav>
-        <a href="{% url 'inicio' %}">Inicio</a>
-        <a href="{% url 'cuidados' %}">Cuidados</a>
-        <a href="{% url 'doctores' %}">Doctores</a>
-        <a href="{% url 'productos' %}">Productos</a>
-        <a href="{% url 'contacto' %}">Contacto</a>
-    </nav>
+  <nav class="site-nav" aria-label="Principal">
+    <ul>
+      <li><a href="{% url 'inicio' %}">Inicio</a></li>
+      <li><a href="{% url 'cuidados' %}" class="active">Cuidados</a></li>
+      <li><a href="{% url 'doctores' %}">Doctores</a></li>
+      <li><a href="{% url 'productos' %}">Productos</a></li>
+      <li><a href="{% url 'contacto' %}">Contacto</a></li>
+      <li><a href="{% url 'inicio' %}#citas" class="nav-cta">Agendar cita</a></li>
+    </ul>
+  </nav>
 
-    <h2>Cuidados Especiales para tu mascota</h2>
-    <article>
-        <h4>Corte de Uña</h4>
-        <p>Cortar las uñas a una mascota (especialmente perros) es fundamental para evitar dolor al caminar, problemas articulares, infecciones y deformaciones en las patas.</p>
-        <img src="{% static 'img/corteperro2.jpg' %}" alt="Corte de uña perro">
-    </article>
+  <main id="main">
+    <section id="cuidados">
+      <div class="section-head">
+        <span class="eyebrow">Cuidados</span>
+        <h2>Cuidados especiales para tu mascota</h2>
+        <p>Pequeños hábitos que mantienen a tu compañero sano, cómodo y feliz.</p>
+      </div>
 
-    <article>
-        <h4>Corte y Cepillado de Pelo</h4>
-        <p>El cepillado frecuente elimina el pelo muerto, suciedad y parásitos, previene nudos dolorosos que causan dermatitis, ayuda a regular su temperatura corporal, distribuye aceites naturales y fortalece el vínculo afectivo</p>
-        <img src="{% static 'img/corteperro.jpg' %}" alt="Corte de Pelo en Perro">
-    </article>
+      <div class="cuidados-list">
 
-    <article>
-        <h4>Vacunación</h4>
-        <p>Vacunar a los perros es fundamental para estimular su sistema inmunológico, creando defensas contra virus y bacterias mortales. Sirven para prevenir enfermedades graves, garantizar una vida larga y saludable, y proteger a la familia humana de enfermedades zoonóticas (que se transmiten de animales a personas), como la rabia</p>
-        <img src="{% static 'img/vacunacion.webp' %}" alt="Vacunación de Perro">
-    </article>
+        <article class="cuidado-card">
+          <div class="cuidado-media">
+            <img src="{% static 'img/corteperro2.jpg' %}" alt="Corte de uña en perro" loading="lazy">
+          </div>
+          <div class="cuidado-body">
+            <span class="cuidado-tag">Higiene</span>
+            <h3>Corte de uña</h3>
+            <p>Cortar las uñas a una mascota (especialmente perros) es fundamental para evitar dolor al caminar, problemas articulares, infecciones y deformaciones en las patas.</p>
+          </div>
+        </article>
 
-    <article>
-        <h4>Desparasitación</h4>
-        <p>Desparasitar a los perros es esencial para eliminar y prevenir parásitos internos (lombrices, gusanos del corazón) y externos (pulgas, garrapatas), protegiendo su salud digestiva, respiratoria y cutánea. Esto previene enfermedades graves, anemia, alergias y evita el contagio de enfermedades zoonóticas a los humanos, especialmente niños.</p>
-        <img src="{% static 'img/desparacitacion.png' %}" alt="Calendario de Desparasitación">
-    </article>
+        <article class="cuidado-card">
+          <div class="cuidado-media">
+            <img src="{% static 'img/corteperro.jpg' %}" alt="Corte de pelo en perro" loading="lazy">
+          </div>
+          <div class="cuidado-body">
+            <span class="cuidado-tag">Estética</span>
+            <h3>Corte y cepillado de pelo</h3>
+            <p>El cepillado frecuente elimina el pelo muerto, suciedad y parásitos, previene nudos dolorosos que causan dermatitis, ayuda a regular su temperatura corporal, distribuye aceites naturales y fortalece el vínculo afectivo.</p>
+          </div>
+        </article>
 
-    <article>
-        <h4>Alimentación Balanceada de Calidad</h4>
-        <p>La alimentación balanceada en un perro es fundamental para garantizar su salud integral, energía y longevidad, cubriendo sus necesidades específicas de proteínas, grasas, carbohidratos, vitaminas y minerales. Asegura un desarrollo óseo y muscular correcto, fortalece el sistema inmunológico, mejora la digestión y mantiene un pelaje brillante y piel sana</p>
-        <img src="{% static 'img/alimentacionperro.jpg' %}" alt="Imagen del Plato del Bien Comer del Perro">
-    </article>
+        <article class="cuidado-card">
+          <div class="cuidado-media">
+            <img src="{% static 'img/vacunacion.webp' %}" alt="Vacunación de perro" loading="lazy">
+          </div>
+          <div class="cuidado-body">
+            <span class="cuidado-tag">Prevención</span>
+            <h3>Vacunación</h3>
+            <p>Vacunar a los perros es fundamental para estimular su sistema inmunológico, creando defensas contra virus y bacterias mortales. Sirve para prevenir enfermedades graves, garantizar una vida larga y saludable, y proteger a la familia humana de enfermedades zoonóticas (que se transmiten de animales a personas), como la rabia.</p>
+          </div>
+        </article>
 
-    <footer>
-        <p>Veterinaria Patitas Felices © 2026</p>
-    </footer>
+        <article class="cuidado-card">
+          <div class="cuidado-media">
+            <img src="{% static 'img/desparacitacion.png' %}" alt="Calendario de desparasitación" loading="lazy">
+          </div>
+          <div class="cuidado-body">
+            <span class="cuidado-tag">Salud</span>
+            <h3>Desparasitación</h3>
+            <p>Desparasitar a los perros es esencial para eliminar y prevenir parásitos internos (lombrices, gusanos del corazón) y externos (pulgas, garrapatas), protegiendo su salud digestiva, respiratoria y cutánea. Esto previene enfermedades graves, anemia, alergias y evita el contagio de enfermedades zoonóticas a los humanos, especialmente niños.</p>
+          </div>
+        </article>
 
+        <article class="cuidado-card">
+          <div class="cuidado-media">
+            <img src="{% static 'img/alimentacionperro.jpg' %}" alt="Plato del bien comer del perro" loading="lazy">
+          </div>
+          <div class="cuidado-body">
+            <span class="cuidado-tag">Nutrición</span>
+            <h3>Alimentación balanceada de calidad</h3>
+            <p>La alimentación balanceada en un perro es fundamental para garantizar su salud integral, energía y longevidad, cubriendo sus necesidades específicas de proteínas, grasas, carbohidratos, vitaminas y minerales. Asegura un desarrollo óseo y muscular correcto, fortalece el sistema inmunológico, mejora la digestión y mantiene un pelaje brillante y piel sana.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Veterinaria Patitas Felices © 2026</p>
+  </footer>
 </body>
 </html>
