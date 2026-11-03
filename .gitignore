@@ -5,3 +5,5 @@ db.sqlite3
 venv/
 .venv/
 staticfiles/
+venv/
+staticfiles/
