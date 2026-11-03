@@ -1,5 +1,6 @@
 import hmac
 import json
+import re
 from datetime import datetime
 
 import requests
@@ -74,6 +75,46 @@ INTERVALO_MIN = 30  # duración de cada cita en minutos
 CITAS_POR_HORARIO = 1  # cuántas citas caben a la misma hora (sube a 2 si atienden dos doctores a la vez)
 
 
+# ---------- Validación de datos de la cita ----------
+# Debe coincidir con las opciones de especie del index.html.
+ESPECIES_ATENDIDAS = {"Perro", "Gato", "Ave", "Reptil"}
+
+
+def limpiar_texto(valor):
+    """Quita espacios al inicio y al final y colapsa los espacios repetidos."""
+    return " ".join(str(valor or "").split())
+
+
+def tiene_letra(texto):
+    return any(c.isalpha() for c in texto)
+
+
+def validar_datos(datos):
+    """
+    Limpia nombres y teléfono dentro de `datos` y valida especie.
+    Devuelve un texto de error si algo no es válido, o None si todo está bien.
+    """
+    mascota = limpiar_texto(datos.get("mascota"))
+    dueno = limpiar_texto(datos.get("dueno"))
+    especie = limpiar_texto(datos.get("especie"))
+    telefono = re.sub(r"\D", "", str(datos.get("telefono") or ""))
+
+    if len(mascota) < 2 or len(mascota) > 40 or not tiene_letra(mascota):
+        return "Escribe un nombre de mascota válido."
+    if len(dueno) < 2 or len(dueno) > 60 or not tiene_letra(dueno):
+        return "Escribe un nombre válido."
+    if len(telefono) != 10:
+        return "El teléfono debe tener exactamente 10 dígitos."
+    if especie not in ESPECIES_ATENDIDAS:
+        return "Selecciona una especie válida."
+
+    datos["mascota"] = mascota
+    datos["dueno"] = dueno
+    datos["especie"] = especie
+    datos["telefono"] = telefono
+    return None
+
+
 def a_minutos(hhmm):
     h, m = hhmm.split(":")
     return int(h) * 60 + int(m)
@@ -126,9 +167,17 @@ def notificar_cita(request):
     except json.JSONDecodeError:
         return JsonResponse({"ok": False, "error": "JSON inválido"}, status=400)
 
+    if not isinstance(datos, dict):
+        return JsonResponse({"ok": False, "error": "JSON inválido"}, status=400)
+
     campos = ["mascota", "especie", "servicio", "fecha", "hora", "dueno", "telefono"]
     if not all(datos.get(c) for c in campos):
         return JsonResponse({"ok": False, "error": "Faltan datos"}, status=400)
+
+    # Limpia y valida nombres, teléfono y especie (modifica `datos` con los valores limpios)
+    error = validar_datos(datos)
+    if error:
+        return JsonResponse({"ok": False, "error": error}, status=400)
 
     error = validar_horario(datos.get("fecha_iso"), datos.get("hora"))
     if error:
