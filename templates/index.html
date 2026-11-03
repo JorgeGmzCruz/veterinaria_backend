@@ -165,7 +165,7 @@
             <div class="field-row">
               <div class="field">
                 <label for="pet-name">Nombre de la mascota</label>
-                <input type="text" id="pet-name" name="pet-name" placeholder="Ej. Firulais" required>
+                <input type="text" id="pet-name" name="pet-name" placeholder="Ej. Firulais" maxlength="40" required>
               </div>
               <div class="field">
                 <label for="pet-species">Especie</label>
@@ -214,11 +214,11 @@
             <div class="field-row">
               <div class="field">
                 <label for="owner-name">Tu nombre</label>
-                <input type="text" id="owner-name" name="owner-name" placeholder="Ej. Ana Torres" required>
+                <input type="text" id="owner-name" name="owner-name" placeholder="Ej. Ana Torres" maxlength="60" required>
               </div>
               <div class="field">
-                <label for="phone">Teléfono</label>
-                <input type="tel" id="phone" name="phone" placeholder="81 0000 0000" required>
+                <label for="phone">Teléfono (10 dígitos)</label>
+                <input type="tel" id="phone" name="phone" placeholder="8100000000" inputmode="numeric" maxlength="10" required>
               </div>
             </div>
           </fieldset>
@@ -314,8 +314,9 @@
       }
  
       function updateSummary(){
-        summaryPet.textContent = petName.value
-          ? `${petName.value}${petSpecies.value ? ' · ' + petSpecies.value : ''}`
+        const nombreMascota = petName.value.trim();
+        summaryPet.textContent = nombreMascota
+          ? `${nombreMascota}${petSpecies.value ? ' · ' + petSpecies.value : ''}`
           : 'Sin datos aún';
  
         summaryService.textContent = service.value || 'Sin datos aún';
@@ -425,6 +426,30 @@
         });
       });
  
+      // --- Validación de nombres y teléfono ---
+      function validarNombre(input, etiqueta){
+        const v = input.value.trim();
+        // al menos 2 caracteres y al menos una letra (no solo espacios, números o símbolos)
+        if (v.length < 2 || !/\p{L}/u.test(v)) {
+          input.setCustomValidity('Escribe ' + etiqueta + ' válido (no solo espacios).');
+        } else {
+          input.setCustomValidity('');
+        }
+      }
+ 
+      function validarTelefono(){
+        phone.value = phone.value.replace(/\D/g, '').slice(0, 10); // solo dígitos, máximo 10
+        if (phone.value.length !== 10) {
+          phone.setCustomValidity('El teléfono debe tener exactamente 10 dígitos.');
+        } else {
+          phone.setCustomValidity('');
+        }
+      }
+ 
+      petName.addEventListener('input', () => validarNombre(petName, 'el nombre de la mascota'));
+      ownerName.addEventListener('input', () => validarNombre(ownerName, 'tu nombre'));
+      phone.addEventListener('input', validarTelefono);
+ 
       // Avisa a la veterinaria por Telegram y abre el bot para que el cliente reciba su confirmación.
       async function notificarVeterinaria(ventana){
         try {
@@ -435,13 +460,13 @@
               'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
             },
             body: JSON.stringify({
-              mascota: petName.value,
+              mascota: petName.value.trim(),
               especie: petSpecies.value,
               servicio: service.value,
               fecha: formatDate(date.value),
               fecha_iso: date.value,
               hora: time.value,
-              dueno: ownerName.value,
+              dueno: ownerName.value.trim(),
               telefono: phone.value
             })
           });
@@ -465,6 +490,9 @@
  
       btnTelegram.addEventListener('click', function(e){
         e.preventDefault();
+        validarNombre(petName, 'el nombre de la mascota');
+        validarNombre(ownerName, 'tu nombre');
+        validarTelefono();
         if(!form.checkValidity()){ form.reportValidity(); return; }
         const ventana = window.open('', '_blank');
         notificarVeterinaria(ventana);
@@ -473,4 +501,3 @@
   </script>
 </body>
 </html>
- 
