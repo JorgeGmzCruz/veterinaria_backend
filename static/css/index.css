@@ -4,12 +4,15 @@
 :root {
   --verde: #1C3A2B;
   --verde-2: #2F5D45;
-  --verde-claro: #DCEBE0;
-  --fondo: #F4F7F2;
-  --tinta: #1E2A23;
-  --texto: #46544B;
-  --linea: rgba(28, 58, 43, 0.14);
+  --verde-claro: #E6F0E9;
+  --fondo: #FFFFFF;
+  --tinta: #16211A;
+  --texto: #4A584F;
+  --linea: #DDE5DF;
   --error: #B3402F;
+  --radio: 14px;
+  --radio-btn: 10px;
+  --sombra: 0 10px 26px -14px rgba(28, 58, 43, 0.35);
   --fuente-titulo: 'Bricolage Grotesque', system-ui, sans-serif;
   --fuente: 'Figtree', system-ui, sans-serif;
 }
@@ -34,7 +37,7 @@ img, svg { max-width: 100%; }
 
 h1, h2, h3 {
   font-family: var(--fuente-titulo);
-  color: var(--verde);
+  color: var(--tinta);
   line-height: 1.15;
 }
 
@@ -66,15 +69,14 @@ select:focus-visible {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(244, 247, 242, 0.93);
-  backdrop-filter: blur(8px);
+  background: #fff;
   border-bottom: 1px solid var(--linea);
 }
 
 .header-inner {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0.8rem 1.25rem;
+  padding: 0.85rem 1.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -118,7 +120,8 @@ select:focus-visible {
 .site-nav ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  align-items: center;
+  gap: 0.2rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -126,17 +129,18 @@ select:focus-visible {
 
 .site-nav a {
   display: block;
-  padding: 0.5rem 0.85rem;
-  border-radius: 999px;
-  color: var(--tinta);
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  color: var(--verde-2);
   font-weight: 500;
   text-decoration: none;
   transition: background-color 0.2s ease;
 }
-.site-nav a:hover,
-.site-nav a.active { background: var(--verde-claro); }
+.site-nav a:hover { background: var(--verde-claro); }
+.site-nav a.active { font-weight: 700; color: var(--verde); }
 
 .site-nav a.nav-cta {
+  margin-left: 0.5rem;
   background: var(--verde);
   color: #fff;
   font-weight: 600;
@@ -157,8 +161,8 @@ main > section {
 }
 .section-head h2 {
   margin: 0 0 0.5rem;
-  font-size: clamp(1.7rem, 3.2vw, 2.2rem);
-  letter-spacing: -0.01em;
+  font-size: clamp(1.7rem, 3.2vw, 2.3rem);
+  letter-spacing: -0.015em;
 }
 .section-head p { margin: 0; }
 
@@ -170,7 +174,7 @@ main > section {
   justify-content: center;
   padding: 0.8rem 1.5rem;
   border: 1.5px solid transparent;
-  border-radius: 999px;
+  border-radius: var(--radio-btn);
   font: inherit;
   font-weight: 600;
   text-decoration: none;
@@ -179,14 +183,14 @@ main > section {
 }
 .btn-primary { background: var(--verde); color: #fff; }
 .btn-primary:hover { background: var(--verde-2); }
-.btn-ghost { border-color: var(--verde); color: var(--verde); background: transparent; }
+.btn-ghost { border-color: var(--verde); color: var(--verde); background: #fff; }
 .btn-ghost:hover { background: var(--verde-claro); }
 
 /* ---------- Portada ---------- */
 
 main > section.hero {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1.15fr 0.85fr;
   gap: 3rem;
   align-items: center;
   padding-top: 4rem;
@@ -200,9 +204,9 @@ main > section.hero {
 
 .hero h1 {
   margin: 0 0 1.1rem;
-  font-size: clamp(2.3rem, 5vw, 3.6rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.4rem, 5.2vw, 3.8rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
 }
 
 .hero-lead {
@@ -243,18 +247,19 @@ main > section.hero {
   display: grid;
   gap: 1.5rem;
   padding: 2rem;
-  border-radius: 28px;
-  background: var(--verde);
-  color: #fff;
+  background: #fff;
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
 }
 
 .hero-paw {
   position: absolute;
-  right: -30px;
-  bottom: -30px;
-  width: 190px;
-  height: 190px;
-  color: rgba(255, 255, 255, 0.07);
+  right: -34px;
+  bottom: -34px;
+  width: 200px;
+  height: 200px;
+  color: rgba(28, 58, 43, 0.06);
   pointer-events: none;
 }
 
@@ -271,8 +276,9 @@ main > section.hero {
   flex: none;
   width: 48px;
   height: 48px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: var(--verde-claro);
+  color: var(--verde);
 }
 .stat-icon svg { width: 24px; height: 24px; }
 
@@ -280,11 +286,12 @@ main > section.hero {
   display: block;
   font-family: var(--fuente-titulo);
   font-size: 1.08rem;
+  color: var(--tinta);
 }
 .stat div span {
   display: block;
   font-size: 0.92rem;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--texto);
 }
 
 /* ---------- Horarios ---------- */
@@ -302,7 +309,8 @@ main > section.hero {
   overflow: hidden;
   background: #fff;
   border: 1px solid var(--linea);
-  border-radius: 22px;
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
 }
 
 .horarios-lista li {
@@ -330,7 +338,8 @@ main > section.hero {
   align-items: flex-start;
   gap: 0.4rem;
   padding: 2rem;
-  border-radius: 22px;
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
   background: var(--verde-claro);
 }
 .horarios-aside h3 { margin: 0.5rem 0 0; font-size: 1.3rem; }
@@ -341,7 +350,7 @@ main > section.hero {
   place-items: center;
   width: 48px;
   height: 48px;
-  border-radius: 14px;
+  border-radius: 12px;
   background: var(--verde);
   color: #fff;
 }
@@ -362,7 +371,8 @@ main > section.hero {
   padding: 2rem;
   background: #fff;
   border: 1px solid var(--linea);
-  border-radius: 24px;
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
 }
 
 .step {
@@ -381,7 +391,7 @@ main > section.hero {
   font-family: var(--fuente-titulo);
   font-weight: 700;
   font-size: 1.1rem;
-  color: var(--verde);
+  color: var(--tinta);
 }
 
 .step-num {
@@ -408,17 +418,17 @@ main > section.hero {
 }
 
 .field label {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: var(--tinta);
+  color: var(--texto);
 }
 
 .field input,
 .field select {
   width: 100%;
-  padding: 0.75rem 0.9rem;
-  border: 1.5px solid rgba(28, 58, 43, 0.25);
-  border-radius: 12px;
+  padding: 0.8rem 0.9rem;
+  border: 1.5px solid #C8D3CC;
+  border-radius: 8px;
   background: #fff;
   color: var(--tinta);
   font: inherit;
@@ -430,34 +440,36 @@ main > section.hero {
 
 .booking-submit { width: 100%; padding: 1rem; font-size: 1.05rem; }
 
+/* Resumen: tarjeta destacada con borde de acento */
 .summary-card {
   position: sticky;
   top: 96px;
   padding: 1.8rem;
-  border-radius: 24px;
-  background: var(--verde);
-  color: #fff;
+  background: #fff;
+  border: 2px solid var(--verde-2);
+  border-radius: var(--radio);
+  box-shadow: 0 16px 34px -16px rgba(28, 58, 43, 0.45);
 }
 .summary-card h3 {
   margin: 0 0 0.5rem;
-  color: #fff;
   font-size: 1.25rem;
 }
 .summary-card dl { margin: 0; }
 .summary-card dt {
   margin-top: 1rem;
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--texto);
 }
 .summary-card dd {
   margin: 0.1rem 0 0;
   font-weight: 600;
   font-size: 1.05rem;
+  color: var(--tinta);
 }
 .summary-note {
   margin: 1.5rem 0 0;
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--texto);
 }
 
 /* ---------- Pie de página ---------- */
@@ -509,6 +521,7 @@ main > section.hero {
   .horarios-card,
   .booking-layout { grid-template-columns: 1fr; }
   .summary-card { position: static; }
+  .site-nav a.nav-cta { margin-left: 0; }
 }
 
 @media (max-width: 520px) {

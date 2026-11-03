@@ -1,0 +1,129 @@
+/* Tarjetas de servicios con foto.
+   Va en static/css/servicios.css y se carga después de index.css. */
+
+.serv-grid {
+  --serv-verde: #1C3A2B;
+  --serv-acento: #2F5D45;
+  --serv-claro: #E6F0E9;
+  --serv-borde: #DDE5DF;
+  --serv-tinta: #16211A;
+  --serv-texto: #4A584F;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 1.75rem;
+  align-items: start;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.5rem 0;
+}
+
+.serv-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--serv-borde);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 22px -16px rgba(28, 58, 43, 0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+/* Al pasar el cursor (o enfocar el botón) la tarjeta crece y se resalta */
+.serv-card:hover,
+.serv-card:focus-within {
+  z-index: 1;
+  transform: scale(1.035);
+  border-color: var(--serv-acento);
+  box-shadow: 0 0 0 2px var(--serv-acento), 0 22px 38px -18px rgba(28, 58, 43, 0.5);
+}
+
+/* Foto: si todavía no subes la imagen, se ve este degradado en su lugar */
+.serv-foto {
+  margin: 0;
+  aspect-ratio: 7 / 5;
+  overflow: hidden;
+  background: linear-gradient(135deg, #CFE3D6, #9CC3AB);
+}
+.serv-foto--vacunacion { background: linear-gradient(135deg, #D9E6EE, #A6C3D6); }
+.serv-foto--bano       { background: linear-gradient(135deg, #F1E4CF, #DDBF8F); }
+
+.serv-foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Cuerpo: título a la izquierda, ícono a la derecha, texto y botón debajo */
+.serv-cuerpo {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 1rem;
+  align-content: start;
+  padding: 1.25rem 1.4rem 1.5rem;
+}
+
+.serv-cuerpo h3 {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  color: var(--serv-tinta);
+}
+
+.serv-icono {
+  grid-column: 2;
+  grid-row: 1;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--serv-claro);
+  color: var(--serv-verde);
+}
+.serv-icono svg { width: 22px; height: 22px; }
+
+.serv-cuerpo p {
+  grid-column: 1 / -1;
+  margin: 0.7rem 0 1.3rem;
+  line-height: 1.55;
+  color: var(--serv-texto);
+}
+
+.serv-cta {
+  grid-column: 1 / -1;
+  justify-self: start;
+  padding: 0.6rem 1.2rem;
+  border: 1.5px solid var(--serv-verde);
+  border-radius: 10px;
+  color: var(--serv-verde);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.serv-cta:hover {
+  background: var(--serv-verde);
+  color: #fff;
+}
+.serv-cta:focus-visible {
+  outline: 3px solid var(--serv-acento);
+  outline-offset: 3px;
+}
+
+/* En pantallas táctiles o pequeñas no hace falta que la tarjeta crezca */
+@media (max-width: 700px), (hover: none) {
+  .serv-card:hover,
+  .serv-card:focus-within { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .serv-card,
+  .serv-cta { transition: none; }
+  .serv-card:hover,
+  .serv-card:focus-within { transform: none; }
+}
