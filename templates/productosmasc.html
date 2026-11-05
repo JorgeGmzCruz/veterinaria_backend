@@ -5,13 +5,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Alimento, juguetes y medicamentos para tu mascota en Veterinaria Patitas Felices.">
-<meta name="theme-color" content="#3F6C51">
+<meta name="theme-color" content="#1C3A2B">
 <title>Productos · Patitas Felices</title>
+
+<link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+<link rel="apple-touch-icon" href="{% static 'img/logo.png' %}">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;600;700;800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
 <link rel="stylesheet" href="{% static 'css/productos.css' %}">
 </head>
 <body>
@@ -19,32 +23,23 @@
 
   <header class="site-header">
     <div class="header-inner">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="15" r="4.2"/>
-          <circle cx="6.2" cy="8.4" r="1.9"/>
-          <circle cx="17.8" cy="8.4" r="1.9"/>
-          <circle cx="9.3" cy="4.6" r="1.7"/>
-          <circle cx="14.7" cy="4.6" r="1.7"/>
-        </svg>
-      </span>
-      <div>
-        <h1>Veterinaria Patitas Felices</h1>
-        <p>Cuidamos a tus mejores amigos</p>
-      </div>
+      <a class="brand" href="{% url 'inicio' %}" aria-label="Patitas Felices, ir al inicio">
+        <img class="brand-logo" src="{% static 'img/logo.png' %}" alt="" width="54" height="54">
+        <span class="brand-name">Patitas Felices<small>Veterinaria</small></span>
+      </a>
+
+      <nav class="site-nav" aria-label="Principal">
+        <ul>
+          <li><a href="{% url 'inicio' %}">Inicio</a></li>
+          <li><a href="{% url 'cuidados' %}">Cuidados</a></li>
+          <li><a href="{% url 'doctores' %}">Doctores</a></li>
+          <li><a href="{% url 'productos' %}" class="active" aria-current="page">Productos</a></li>
+          <li><a href="{% url 'contacto' %}">Contacto</a></li>
+          <li><a href="{% url 'inicio' %}#citas" class="nav-cta">Agendar cita</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
-
-  <nav class="site-nav" aria-label="Principal">
-    <ul>
-      <li><a href="{% url 'inicio' %}">Inicio</a></li>
-      <li><a href="{% url 'cuidados' %}">Cuidados</a></li>
-      <li><a href="{% url 'doctores' %}">Doctores</a></li>
-      <li><a href="{% url 'productos' %}" class="active">Productos</a></li>
-      <li><a href="{% url 'contacto' %}">Contacto</a></li>
-      <li><a href="{% url 'inicio' %}#citas" class="nav-cta">Agendar cita</a></li>
-    </ul>
-  </nav>
 
   <main id="main">
     <section id="productos">
@@ -89,8 +84,21 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <footer>
-    <p>Veterinaria Patitas Felices © 2026</p>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <strong>Veterinaria Patitas Felices</strong>
+        <p>Cuidamos a tus mejores amigos.</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="{% url 'inicio' %}">Inicio</a></li>
+        <li><a href="{% url 'cuidados' %}">Cuidados</a></li>
+        <li><a href="{% url 'doctores' %}">Doctores</a></li>
+        <li><a href="{% url 'productos' %}">Productos</a></li>
+        <li><a href="{% url 'contacto' %}">Contacto</a></li>
+      </ul>
+    </div>
+    <p class="footer-legal">Veterinaria Patitas Felices © 2026</p>
   </footer>
 
   <script>

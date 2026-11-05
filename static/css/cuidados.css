@@ -1,78 +1,102 @@
 /* Estilos específicos de la página de Cuidados.
-   Se carga DESPUÉS de index.css, que ya trae variables, header, menú, footer y section-head. */
+   Se carga DESPUÉS de index.css, que ya trae variables (--verde, --linea, --sombra...),
+   encabezado con logo, menú, pie de página y section-head. */
 
-.cuidados-list{
-  display:flex;
-  flex-direction:column;
-  gap:28px;
+/* Etiqueta pequeña sobre el título de la sección */
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 0.7rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: var(--verde-claro);
+  color: var(--verde-2);
+  font-family: var(--fuente-titulo);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-.cuidado-card{
-  background:var(--white);
-  border-radius:var(--radius-lg);
-  box-shadow:var(--shadow-card);
-  overflow:hidden;
-  display:grid;
-  grid-template-columns:0.9fr 1.1fr;
-  transition:transform 0.25s ease, box-shadow 0.25s ease;
+.cuidados-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
 }
-.cuidado-card:hover{
-  transform:translateY(-6px);
-  box-shadow:var(--shadow-card-hover);
+
+.cuidado-card {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.cuidado-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 34px -16px rgba(28, 58, 43, 0.45);
 }
 
 /* Las tarjetas pares invierten el lado de la imagen */
-.cuidado-card:nth-child(even){ grid-template-columns:1.1fr 0.9fr; }
-.cuidado-card:nth-child(even) .cuidado-media{ order:2; }
+.cuidado-card:nth-child(even) { grid-template-columns: 1.1fr 0.9fr; }
+.cuidado-card:nth-child(even) .cuidado-media { order: 2; }
 
-.cuidado-media{
-  position:relative;
-  min-height:240px;
-  background:var(--sage-100);
+.cuidado-media {
+  position: relative;
+  min-height: 240px;
+  background: var(--verde-claro);
 }
-.cuidado-media img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.cuidado-body{
-  padding:30px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-.cuidado-tag{
-  align-self:flex-start;
-  font-family:var(--font-display);
-  font-weight:600;
-  font-size:0.78rem;
-  letter-spacing:0.06em;
-  text-transform:uppercase;
-  color:var(--gold-600);
-  background:var(--gold-100);
-  padding:5px 12px;
-  border-radius:999px;
-  margin-bottom:12px;
-}
-.cuidado-body h3{
-  font-family:var(--font-display);
-  color:var(--sage-900);
-  font-size:1.35rem;
-  margin:0 0 10px;
-}
-.cuidado-body p{
-  color:var(--ink-600);
-  margin:0;
-  font-size:0.98rem;
+.cuidado-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-@media (max-width:780px){
+.cuidado-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.cuidado-tag {
+  align-self: flex-start;
+  margin-bottom: 0.75rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: var(--verde-claro);
+  color: var(--verde-2);
+  font-family: var(--fuente-titulo);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cuidado-body h3 {
+  margin: 0 0 0.6rem;
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
+}
+
+.cuidado-body p {
+  margin: 0;
+  font-size: 0.98rem;
+  color: var(--texto);
+}
+
+@media (max-width: 780px) {
   .cuidado-card,
-  .cuidado-card:nth-child(even){ grid-template-columns:1fr; }
-  .cuidado-card:nth-child(even) .cuidado-media{ order:0; }
-  .cuidado-media{ min-height:200px; }
-  .cuidado-body{ padding:24px; }
+  .cuidado-card:nth-child(even) { grid-template-columns: 1fr; }
+  .cuidado-card:nth-child(even) .cuidado-media { order: 0; }
+  .cuidado-media { min-height: 200px; }
+  .cuidado-body { padding: 1.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cuidado-card { transition: none; }
+  .cuidado-card:hover { transform: none; }
 }
